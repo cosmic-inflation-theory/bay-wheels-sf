@@ -214,41 +214,6 @@
     vertical-align: middle;
   }
 
-  /* Low-availability alert control */
-  .alert-btn {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: #fff; border: 1px solid #d1d1d6; border-radius: 9px;
-    padding: 6px 11px; font-size: 0.8rem; font-weight: 600; color: #1d1d1f;
-    cursor: pointer; font-family: inherit; white-space: nowrap;
-  }
-  .alert-btn:hover { background: #f5f5f7; }
-  .alert-btn.on { color: #0071e3; border-color: #0071e3; background: #eef4ff; }
-  .alert-pop {
-    position: absolute; right: 0; top: calc(100% + 8px); z-index: 50;
-    width: 270px; background: #fff; border: 1px solid #e6e6eb; border-radius: 14px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.16); padding: 14px;
-  }
-  .alert-pop h4 { margin: 0 0 4px; font-size: 0.92rem; }
-  .alert-pop p { margin: 0 0 10px; font-size: 0.74rem; color: #6e6e73; line-height: 1.4; }
-  .alert-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-  .alert-row label { font-size: 0.8rem; color: #1d1d1f; }
-  .alert-row input {
-    width: 56px; padding: 6px 8px; border: 1px solid #d1d1d6; border-radius: 8px;
-    font-size: 0.85rem; font-family: inherit; text-align: center;
-  }
-  .alert-save {
-    width: 100%; padding: 8px; border: none; border-radius: 9px;
-    background: #0071e3; color: #fff; font-weight: 600; font-size: 0.82rem;
-    cursor: pointer; font-family: inherit;
-  }
-  .alert-save:disabled { opacity: 0.5; cursor: default; }
-  .alert-existing { font-size: 0.74rem; color: #34c759; margin-top: 9px; display: flex;
-    align-items: center; justify-content: space-between; gap: 8px; }
-  .alert-existing button {
-    background: none; border: none; color: #ff3b30; cursor: pointer;
-    font-size: 0.74rem; font-family: inherit; padding: 0;
-  }
-  .alert-msg { font-size: 0.72rem; color: #6e6e73; margin-top: 8px; min-height: 1em; }
 
   /* Resolution toggle */
   .res-wrap {
@@ -606,21 +571,7 @@
 <button class="seg" data-day="sun" onclick="selectDay(this)">Sun</button>
       </div>
     </div>
-    <div style="position:relative" id="alert-wrap">
-      <button id="alert-btn" class="alert-btn" style="display:none" onclick="toggleAlertPopover()">🔔 Alert me</button>
-      <div id="alert-pop" class="alert-pop" hidden>
-        <h4>Low-bike alert</h4>
-        <p>Get a push notification when this station drops to your chosen number of e-bikes.</p>
-        <div class="alert-row">
-          <label>Notify at ≤</label>
-          <input id="alert-threshold" type="number" min="1" max="50" value="2" inputmode="numeric">
-          <label>e-bikes</label>
-        </div>
-        <button id="alert-save" class="alert-save" onclick="saveAlert()">Enable alert</button>
-        <div id="alert-existing" class="alert-existing" style="display:none"></div>
-        <div id="alert-msg" class="alert-msg"></div>
-      </div>
-    </div>
+    
   </div>
   <div id="station-panel"></div>
 </div>
@@ -887,135 +838,7 @@ const API_BASE     = 'https://bayglide-api.onrender.com';
 const chartData    = {};
 const forecastData = {};
 
-/* ── Low-availability push alerts ──────────────────────────────────────────
-   Lets the user set "notify me when station X has ≤ N e-bikes". Subscribes via
-   the Web Push API and stores the rule in the API. Best-effort: if the browser
-   has no push support (or permission is denied) the button just shows why. */
-let alertStation = null;          // { id, name } of the panel's current station
-let pushSub = null;               // cached PushSubscription
-let alertRules = [];              // this browser's rules, refreshed from the API
 
-function pushSupported() {
-  return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
-}
-
-function urlB64ToUint8Array(b64) {
-  const pad = '='.repeat((4 - b64.length % 4) % 4);
-  const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
-  return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
-}
-
-async function alertOnStationChange(s) {
-  alertStation = { id: s.id, name: s.name };
-  const btn = document.getElementById('alert-btn');
-  if (!btn) return;
-  document.getElementById('alert-pop').hidden = true;
-  if (!pushSupported()) { btn.style.display = 'none'; return; }
-  btn.style.display = 'inline-flex';
-  // Reflect whether this station already has an alert, once we know the rules.
-  if (pushSub) await refreshAlertRules();
-  reflectAlertButton();
-}
-
-function reflectAlertButton() {
-  const btn = document.getElementById('alert-btn');
-  if (!btn || !alertStation) return;
-  const rule = alertRules.find(r => r.station_id === alertStation.id);
-  btn.classList.toggle('on', !!rule);
-  btn.textContent = rule ? ('🔔 Alerting ≤ ' + rule.threshold) : '🔔 Alert me';
-}
-
-function toggleAlertPopover() {
-  const pop = document.getElementById('alert-pop');
-  pop.hidden = !pop.hidden;
-  if (!pop.hidden) renderAlertPopover();
-}
-
-function renderAlertPopover() {
-  const rule = alertStation && alertRules.find(r => r.station_id === alertStation.id);
-  const existing = document.getElementById('alert-existing');
-  const save = document.getElementById('alert-save');
-  document.getElementById('alert-msg').textContent = '';
-  if (rule) {
-    document.getElementById('alert-threshold').value = rule.threshold;
-    existing.style.display = 'flex';
-    existing.innerHTML = '<span>✓ Active: notify at ≤ ' + rule.threshold + '</span>';
-    const rm = document.createElement('button');
-    rm.textContent = 'Remove'; rm.onclick = () => removeAlert(rule.id);
-    existing.appendChild(rm);
-    save.textContent = 'Update alert';
-  } else {
-    existing.style.display = 'none';
-    save.textContent = 'Enable alert';
-  }
-}
-
-async function ensureSubscription() {
-  if (pushSub) return pushSub;
-  const reg = await navigator.serviceWorker.register('sw.js');
-  await navigator.serviceWorker.ready;
-  let sub = await reg.pushManager.getSubscription();
-  if (!sub) {
-    const perm = await Notification.requestPermission();
-    if (perm !== 'granted') throw new Error('Notifications blocked');
-    const key = await fetch(API_BASE + '/api/vapidPublicKey').then(r => r.json());
-    if (!key.key) throw new Error('Push not configured on the server yet');
-    sub = await reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlB64ToUint8Array(key.key),
-    });
-  }
-  pushSub = sub;
-  return sub;
-}
-
-async function refreshAlertRules() {
-  if (!pushSub) return;
-  try {
-    const r = await fetch(API_BASE + '/api/alerts?endpoint=' + encodeURIComponent(pushSub.endpoint));
-    alertRules = (await r.json()).alerts || [];
-  } catch (e) { alertRules = []; }
-}
-
-async function saveAlert() {
-  const msg = document.getElementById('alert-msg');
-  const threshold = parseInt(document.getElementById('alert-threshold').value, 10);
-  if (!(threshold >= 1)) { msg.textContent = 'Pick a number ≥ 1.'; return; }
-  msg.textContent = 'Enabling…';
-  try {
-    const sub = await ensureSubscription();
-    const res = await fetch(API_BASE + '/api/alerts', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ subscription: sub.toJSON(), station_id: alertStation.id, threshold }),
-    });
-    if (!res.ok) throw new Error('Server error ' + res.status);
-    await refreshAlertRules();
-    reflectAlertButton(); renderAlertPopover();
-    msg.textContent = "Done — we'll ping you when it's low.";
-  } catch (e) {
-    msg.textContent = (e.message === 'Notifications blocked')
-      ? 'Allow notifications in your browser to use alerts.' : 'Could not enable: ' + e.message;
-  }
-}
-
-async function removeAlert(id) {
-  const msg = document.getElementById('alert-msg');
-  try {
-    await fetch(API_BASE + '/api/alerts/' + id + '?endpoint=' + encodeURIComponent(pushSub.endpoint),
-                { method: 'DELETE' });
-    await refreshAlertRules();
-    reflectAlertButton(); renderAlertPopover();
-    msg.textContent = 'Alert removed.';
-  } catch (e) { msg.textContent = 'Could not remove: ' + e.message; }
-}
-
-// Pre-register the worker + load any existing rules so the button reflects state.
-if (pushSupported()) {
-  navigator.serviceWorker.register('sw.js').then(async (reg) => {
-    const sub = await reg.pushManager.getSubscription();
-    if (sub) { pushSub = sub; await refreshAlertRules(); reflectAlertButton(); }
-  }).catch(() => {});
-}
 
 
 const _pendingFetch = {};
@@ -1429,7 +1252,6 @@ function updatePanelHeader(s) {
   const metaEl = document.getElementById('panel-station-meta');
   if (!nameEl || !metaEl) return;
   nameEl.textContent = s.name;
-  alertOnStationChange(s);
   const live = s.live != null ? s.live : '—';
   const total = nearestStations.length;
   const rankLabel = s.rank === 0 ? 'Nearest of ' + total : '#' + (s.rank + 1) + ' of ' + total;
