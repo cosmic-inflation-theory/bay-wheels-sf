@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BayGlide — Preview (dark)</title>
+<title>BayGlide — Preview (light)</title>
 <link rel="preconnect" href="https://bayglide-api.onrender.com" crossorigin>
 <link rel="preconnect" href="https://gbfs.lyft.com" crossorigin>
 <link rel="preconnect" href="https://a.basemaps.cartocdn.com">
@@ -23,7 +23,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-    background: rgba(13,14,17,0.97); color: #f2f2f4;
+    background: rgba(250,250,252,0.94); color: #1d1d1f;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -42,17 +42,17 @@
     position: absolute; left: 50%; transform: translateX(-50%);
   }
   .logo-glide { color: #34c759; }  /* same green as the live indicators */
-  .nav-meta  { font-size: 0.78rem; color: #9aa0a8; }
+  .nav-meta  { font-size: 0.78rem; color: #6e6e73; }
   @media (max-width: 600px) { nav { padding: 0 20px; } .nav-meta { display: none; } }
 
   /* Map section */
   .map-wrap {
     position: relative;
     background: white;
-    border-bottom: 1px solid rgba(255,255,255,0.14);
+    border-bottom: 1px solid #e5e5ea;
   }
   /* bg matches the CARTO light basemap so tiles fade in instead of flashing gray */
-  #map { height: 460px; width: 100%; z-index: 1; background: #0a0b0d; }
+  #map { height: 460px; width: 100%; z-index: 1; background: #eaeaea; }
   .leaflet-zoom-anim .leaflet-zoom-animated {
     transition: transform 0.15s cubic-bezier(0,0,0.25,1) !important;
   }
@@ -96,8 +96,8 @@
   }
   .sr:last-child { border-bottom: none; }
   .sr:hover { background: rgba(0,113,227,0.05); }
-  .sr-name { font-size: 0.88rem; font-weight: 600; color: #f2f2f4; }
-  .sr-meta { font-size: 0.74rem; color: #9aa0a8; margin-top: 1px; }
+  .sr-name { font-size: 0.88rem; font-weight: 600; color: #1d1d1f; }
+  .sr-meta { font-size: 0.74rem; color: #6e6e73; margin-top: 1px; }
   .sr-badge {
     font-size: 0.78rem; font-weight: 700;
     padding: 3px 9px; border-radius: 999px; white-space: nowrap; flex-shrink: 0;
@@ -105,11 +105,11 @@
   #search {
     flex: 1; border: none; outline: none; background: transparent;
     /* 16px minimum: iOS Safari auto-zooms the page when focusing any input smaller than 16px */
-    font-family: inherit; font-size: 16px; color: #f2f2f4;
+    font-family: inherit; font-size: 16px; color: #1d1d1f;
   }
-  #search::placeholder { color: #8e8e96; }
-  .search-icon { color: #8e8e96; font-size: 0.9rem; flex-shrink: 0; }
-  .result-count { font-size: 0.76rem; color: #8e8e96; white-space: nowrap; flex-shrink: 0; }
+  #search::placeholder { color: #aeaeb2; }
+  .search-icon { color: #aeaeb2; font-size: 0.9rem; flex-shrink: 0; }
+  .result-count { font-size: 0.76rem; color: #aeaeb2; white-space: nowrap; flex-shrink: 0; }
   #locate-btn {
     flex-shrink: 0;
     width: 40px; height: 40px;
@@ -130,7 +130,7 @@
     box-shadow: 0 1px 8px rgba(0,0,0,0.1);
     font-size: 0.74rem; color: #3c3c43;
   }
-  .legend-title { font-weight: 600; margin-bottom: 6px; color: #f2f2f4; }
+  .legend-title { font-weight: 600; margin-bottom: 6px; color: #1d1d1f; }
   .legend-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
   .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
@@ -206,10 +206,10 @@
   .section-title {
     font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em;
   }
-  .section-sub { font-size: 0.82rem; color: #9aa0a8; margin-top: 2px; }
+  .section-sub { font-size: 0.82rem; color: #6e6e73; margin-top: 2px; }
   .panel-live-badge {
     display: inline-flex; align-items: center;
-    background: white; border: 1px solid rgba(255,255,255,0.22); border-radius: 8px;
+    background: white; border: 1px solid #d1d1d6; border-radius: 8px;
     padding: 1px 7px; color: #34c759; white-space: nowrap;
     vertical-align: middle;
   }
@@ -223,7 +223,7 @@
   .res-btn {
     background: transparent; border: none; border-radius: 5px;
     padding: 3px 10px; font-size: 0.76rem; font-weight: 600;
-    color: #9aa0a8; cursor: pointer; font-family: inherit;
+    color: #6e6e73; cursor: pointer; font-family: inherit;
     transition: background 0.15s, color 0.15s;
     white-space: nowrap;
   }
@@ -258,7 +258,7 @@
     white-space: nowrap;
   }
   .seg.active {
-    background: white; color: #f2f2f4;
+    background: white; color: #1d1d1f;
     box-shadow: 0 1px 4px rgba(0,0,0,0.14), 0 0 0 0.5px rgba(0,0,0,0.08);
   }
 
@@ -285,16 +285,16 @@
   }
   .dot-pip {
     width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    background: rgba(255,255,255,0.22);
+    background: #d1d1d6;
     transition: background 0.2s, transform 0.2s;
   }
   .dot.active .dot-pip { background: #0071e3; transform: scale(1.2); }
   .dot-label {
-    font-size: 0.72rem; color: #8e8e96;
+    font-size: 0.72rem; color: #aeaeb2;
     transition: color 0.2s;
     white-space: nowrap;
   }
-  .dot.active .dot-label { color: #f2f2f4; font-weight: 500; }
+  .dot.active .dot-label { color: #1d1d1f; font-weight: 500; }
   .station-card {
     background: white; border-radius: 18px;
     padding: 22px 24px 16px;
@@ -307,7 +307,7 @@
   }
   .card-pager {
     position: absolute; top: 16px; right: 18px;
-    font-size: 0.7rem; color: #8e8e96; letter-spacing: 0.02em;
+    font-size: 0.7rem; color: #aeaeb2; letter-spacing: 0.02em;
   }
   @media (max-width: 640px) {
     /* ── Bottom-sheet layout: full-screen map, cards slide up over it ── */
@@ -331,9 +331,9 @@
          svh (not dvh): dvh changes when Safari's toolbar collapses mid-scroll,
          which moves the snap stops while the user is dragging — the glitch. */
       margin: calc(100vh - 150px) 0 0; margin-top: calc(100svh - 150px);
-      background: rgba(13,14,17,0.97);
+      background: rgba(250,250,252,0.94);
       border-radius: 20px 20px 0 0;
-      box-shadow: 0 -8px 32px rgba(0,0,0,0.6);
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.18);
       /* Document must end exactly at the pulled-up stop — any space below
          the dots becomes a third (boundary) resting position */
       padding-top: 8px; padding-bottom: 10px;
@@ -342,7 +342,7 @@
     .content::before {                       /* grab handle */
       content: ""; display: block;
       width: 36px; height: 5px; border-radius: 3px;
-      background: rgba(255,255,255,0.22); margin: 4px auto 14px;
+      background: #d1d1d6; margin: 4px auto 14px;
     }
     .cards-scroll {
       margin-left: -20px;
@@ -352,13 +352,13 @@
       padding-right: 16px;
       padding-bottom: 8px;
       scroll-padding-left: 16px;
-      background: rgba(13,14,17,0.97);
+      background: rgba(250,250,252,0.94);
     }
     .station-card {
       flex: 0 0 calc(100vw - 52px);
       border-radius: 14px;
       padding: 18px 20px 14px;
-      box-shadow: 0 1px 6px rgba(255,255,255,0.05);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
     }
     .card-pager { top: 14px; right: 16px; }
   }
@@ -367,7 +367,7 @@
     margin-bottom: 10px; gap: 8px;
   }
   .station-name { font-size: 0.9rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2px; }
-  .station-meta { font-size: 0.76rem; color: #9aa0a8; }
+  .station-meta { font-size: 0.76rem; color: #6e6e73; }
   .station-right {
     display: flex; flex-direction: row; align-items: center;
     gap: 8px; flex-wrap: wrap; justify-content: flex-start;
@@ -422,54 +422,54 @@
     font-size: 0.76rem; color: #0071e3; white-space: nowrap;
   }
   .best-badge.no-data {
-    background: rgba(255,255,255,0.05); border-color: rgba(0,0,0,0.1); color: #8e8e96;
+    background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); color: #aeaeb2;
   }
 
   /* Rec strip */
   .rec-strip {
     background: rgba(0,113,227,0.06); border: 1px solid rgba(0,113,227,0.14);
     border-radius: 10px; padding: 9px 14px; margin-bottom: 10px;
-    font-size: 0.84rem; color: #f2f2f4; display: flex; align-items: center;
+    font-size: 0.84rem; color: #1d1d1f; display: flex; align-items: center;
     gap: 4px; flex-wrap: wrap;
   }
   .rec-action { font-weight: 700; color: #0071e3; }
-  .rec-sep    { color: #8e8e96; margin: 0 3px; }
+  .rec-sep    { color: #aeaeb2; margin: 0 3px; }
 
   /* Chart legend */
   .chart-legend {
     display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
-    font-size: 0.72rem; color: #9aa0a8; margin-bottom: 2px;
+    font-size: 0.72rem; color: #6e6e73; margin-bottom: 2px;
   }
   .legend-swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
-  .cap-swatch  { background: rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.14); }
-  .off-swatch  { background: rgba(255,255,255,0.22); margin-left: 8px; }
+  .cap-swatch  { background: rgba(0,0,0,0.1); border: 1px solid #e5e5ea; }
+  .off-swatch  { background: #d1d1d6; margin-left: 8px; }
   .on-swatch   { background: #0071e3; margin-left: 8px; }
 
   /* Scrollable chart wrapper */
   .chart-scroll {
     overflow-x: auto;
     touch-action: pan-x;
-    scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.22) transparent;
+    scrollbar-width: thin; scrollbar-color: #d1d1d6 transparent;
     padding-bottom: 6px;
     overscroll-behavior-x: contain;
   }
   .chart-scroll::-webkit-scrollbar { height: 4px; }
   .chart-scroll::-webkit-scrollbar-track { background: transparent; }
-  .chart-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.22); border-radius: 2px; }
+  .chart-scroll::-webkit-scrollbar-thumb { background: #d1d1d6; border-radius: 2px; }
   .chart-bars-wrap {
     flex: 1; min-width: 0; overflow: hidden; position: relative;
   }
   .chart-bars-wrap::after {
     content: ''; position: absolute; right: 0; top: 0; bottom: 0;
     width: 32px; pointer-events: none; z-index: 2;
-    background: linear-gradient(to left, #0d0e11 10%, transparent);
+    background: linear-gradient(to left, rgba(250,250,252,0.96) 10%, transparent);
   }
 
   /* Forecast row */
 
-  .fc-time { font-size:0.62rem; font-weight:600; color:#9aa0a8; }
+  .fc-time { font-size:0.62rem; font-weight:600; color:#6e6e73; }
   .fc-count { font-size:1rem; font-weight:700; letter-spacing:-0.02em; }
-  .fc-unit { font-size:0.54rem; color:#8e8e96; }
+  .fc-unit { font-size:0.54rem; color:#aeaeb2; }
 
   /* Hour tiles — horizontal scroll, 3 visible at a time */
   .hour-row {
@@ -483,17 +483,17 @@
   .hour-cell {
     flex: 0 0 calc(33.33% - 6px);
     scroll-snap-align: start;
-    background: rgba(13,14,17,0.97); border-radius: 9px;
+    background: rgba(250,250,252,0.94); border-radius: 9px;
     padding: 8px 4px; text-align: center;
     border: 1.5px solid transparent;
   }
   .hour-cell.peak { background: rgba(0,113,227,0.08); border-color: #0071e3; }
-  .hour-time { font-size: 0.66rem; font-weight: 600; color: #9aa0a8; margin-bottom: 2px; }
-  .hour-avg  { font-size: 1.1rem; font-weight: 700; color: #f2f2f4; letter-spacing: -0.02em; }
+  .hour-time { font-size: 0.66rem; font-weight: 600; color: #6e6e73; margin-bottom: 2px; }
+  .hour-avg  { font-size: 1.1rem; font-weight: 700; color: #1d1d1f; letter-spacing: -0.02em; }
   .hour-cell.peak .hour-avg { color: #0071e3; }
-  .hour-label { font-size: 0.56rem; color: #8e8e96; margin-top: 1px; }
+  .hour-label { font-size: 0.56rem; color: #aeaeb2; margin-top: 1px; }
 
-  .accuracy-note { font-size: 0.68rem; color: #8e8e96; margin-top: 8px; font-style: italic; }
+  .accuracy-note { font-size: 0.68rem; color: #aeaeb2; margin-top: 8px; font-style: italic; }
 
   @keyframes sk-shimmer {
     0%   { background-position: -200% 0; }
@@ -501,15 +501,15 @@
   }
   .sk {
     border-radius: 6px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.11) 50%, rgba(255,255,255,0.06) 75%);
+    background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: sk-shimmer 1.5s ease-in-out infinite;
   }
 
   footer {
     text-align: center; padding: 24px;
-    font-size: 0.74rem; color: #8e8e96;
-    border-top: 1px solid rgba(255,255,255,0.14);
+    font-size: 0.74rem; color: #aeaeb2;
+    border-top: 1px solid #e5e5ea;
   }
 </style>
 
@@ -517,12 +517,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-<style id="preview-dark">
+<style id="preview-light">
 :root {
-  --bg: #0a0b0d; --ink: #f2f2f4; --ink-2: #9aa0a8; --ink-3: #6b6b74;
-  --glass: rgba(255,255,255,0.055); --glass-2: rgba(255,255,255,0.09);
-  --line: rgba(255,255,255,0.10); --line-2: rgba(255,255,255,0.16);
-  --accent: #34c759;
+  --bg: #f6f7f9; --ink: #16171a; --ink-2: #5f646d; --ink-3: #9aa0a8;
+  --glass: rgba(255,255,255,0.66); --glass-2: rgba(255,255,255,0.85);
+  --line: rgba(20,22,26,0.08); --line-2: rgba(20,22,26,0.14);
+  --accent: #1faa4f; --accent-soft: rgba(52,199,89,0.12);
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
   --disp: 'Space Grotesk', -apple-system, sans-serif;
 }
@@ -530,81 +530,57 @@ body { background: var(--bg) !important; color: var(--ink) !important; }
 body::before {
   content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(60% 38% at 50% -6%, rgba(52,199,89,0.10), transparent 65%),
-    radial-gradient(42% 30% at 88% 108%, rgba(52,199,89,0.05), transparent 60%);
+    radial-gradient(58% 36% at 50% -6%, rgba(52,199,89,0.08), transparent 65%),
+    radial-gradient(40% 28% at 90% 110%, rgba(52,199,89,0.05), transparent 60%);
 }
 body::after {
   content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 2147483000;
-  opacity: 0.028; mix-blend-mode: overlay;
+  opacity: 0.02; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-nav { background: rgba(10,11,13,0.72) !important; border-bottom: 1px solid var(--line) !important; }
+nav { background: rgba(250,250,252,0.7) !important; border-bottom: 1px solid var(--line) !important;
+  box-shadow: none !important; }
 .nav-logo { font-family: var(--disp) !important; color: var(--ink) !important; letter-spacing: 0.01em; }
 .nav-logo::after { content: 'PREVIEW'; font: 600 9px var(--mono); color: var(--accent);
-  border: 1px solid rgba(52,199,89,0.4); border-radius: 4px; padding: 2px 5px;
+  border: 1px solid rgba(31,170,79,0.45); border-radius: 4px; padding: 2px 5px;
   margin-left: 9px; vertical-align: 2px; letter-spacing: 0.08em; }
 .nav-meta { color: var(--ink-3) !important; font-family: var(--mono) !important; font-size: 0.72rem !important; }
-.leaflet-container { background: var(--bg) !important; }
-.map-controls { background: rgba(18,19,23,0.82) !important; border: 1px solid var(--line) !important;
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important; }
+.map-controls { background: var(--glass-2) !important; border: 1px solid var(--line) !important;
+  backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 2px 14px rgba(20,22,26,0.06) !important; }
 #search { background: transparent !important; color: var(--ink) !important; }
-#search::placeholder { color: var(--ink-3) !important; }
-#search-dropdown { background: rgba(16,17,20,0.92) !important; border: 1px solid var(--line) !important;
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+#search-dropdown { background: rgba(255,255,255,0.92) !important; border: 1px solid var(--line) !important;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 12px 32px rgba(20,22,26,0.10) !important; }
 .sr { border-color: var(--line) !important; }
-.sr:hover { background: var(--glass-2) !important; }
-.sr-name { color: var(--ink) !important; }
-.sr-meta { color: var(--ink-3) !important; }
-#locate-btn { background: rgba(20,21,25,0.78) !important; border: 1px solid var(--line) !important; }
-#locate-btn:hover { background: rgba(30,31,36,0.9) !important; }
-.map-legend { background: rgba(16,17,20,0.82) !important; border: 1px solid var(--line) !important;
-  color: var(--ink-2) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  box-shadow: none !important; }
-.legend-title { color: var(--ink) !important; }
-.leaflet-control-attribution { background: rgba(10,11,13,0.6) !important; color: var(--ink-3) !important; }
-.leaflet-control-attribution a { color: var(--ink-2) !important; }
-.timelapse { background: rgba(16,17,20,0.72) !important; border: 1px solid var(--line) !important;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.45) !important; }
-.tl-time { color: var(--ink) !important; font-family: var(--mono) !important; font-weight: 500 !important; }
-.tl-live { border-color: var(--line-2) !important; color: var(--ink-2) !important; background: transparent !important; }
-.tl-live.on { color: var(--accent) !important; border-color: rgba(52,199,89,0.5) !important; }
-.leaflet-popup-content-wrapper { background: rgba(18,19,23,0.92) !important; color: var(--ink) !important;
+#locate-btn { background: var(--glass-2) !important; border: 1px solid var(--line) !important;
+  box-shadow: 0 2px 14px rgba(20,22,26,0.06) !important; }
+.map-legend { background: var(--glass-2) !important; border: 1px solid var(--line) !important;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 2px 14px rgba(20,22,26,0.06) !important; }
+.timelapse { background: var(--glass-2) !important; border: 1px solid var(--line) !important;
+  backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 4px 20px rgba(20,22,26,0.08) !important; }
+.tl-time { font-family: var(--mono) !important; font-weight: 500 !important; }
+.tl-live { border-color: var(--line-2) !important; }
+.tl-live.on { color: var(--accent) !important; border-color: rgba(31,170,79,0.5) !important; }
+.leaflet-popup-content-wrapper { background: rgba(255,255,255,0.94) !important;
   border: 1px solid var(--line) !important; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.55) !important; }
-.leaflet-popup-tip { background: rgba(18,19,23,0.92) !important; }
-.section-title { font-family: var(--disp) !important; color: var(--ink) !important; letter-spacing: -0.01em; }
-.section-sub { color: var(--ink-2) !important; }
+  box-shadow: 0 12px 36px rgba(20,22,26,0.12) !important; }
+.section-title { font-family: var(--disp) !important; letter-spacing: -0.01em; }
 .station-card { background: var(--glass) !important; border: 1px solid var(--line) !important;
-  box-shadow: none !important; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-.station-name { font-family: var(--disp) !important; color: var(--ink) !important; }
-.station-meta { color: var(--ink-2) !important; }
-.panel-live-badge { background: rgba(52,199,89,0.10) !important; border: 1px solid rgba(52,199,89,0.35) !important;
+  backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: 0 1px 2px rgba(20,22,26,0.03), 0 10px 28px rgba(20,22,26,0.05) !important; }
+.station-name { font-family: var(--disp) !important; }
+.panel-live-badge { background: var(--accent-soft) !important; border: 1px solid rgba(31,170,79,0.35) !important;
   color: var(--accent) !important; font-family: var(--mono) !important; font-size: 0.86em; }
-.accuracy-note { color: var(--ink-3) !important; }
-.segment-wrap { background: rgba(255,255,255,0.07) !important; }
-.seg { color: var(--ink-2) !important; }
-.seg.active { background: rgba(255,255,255,0.16) !important; color: var(--ink) !important; box-shadow: none !important; }
-.res-wrap { background: rgba(255,255,255,0.07) !important; }
-.res-btn { color: var(--ink-2) !important; }
-.res-btn.active { background: rgba(255,255,255,0.16) !important; color: var(--ink) !important; box-shadow: none !important; }
+.seg.active { box-shadow: 0 1px 4px rgba(20,22,26,0.10) !important; }
 .fc-count, .fc-time, .hour-avg, .result-count, .sr-badge, #live-ts, #panel-live-count
   { font-family: var(--mono) !important; }
-.best-badge { background: rgba(52,199,89,0.08) !important; border: 1px solid rgba(52,199,89,0.3) !important; }
-.best-badge.no-data { background: var(--glass) !important; border-color: var(--line) !important; }
-.rec-strip { border-color: var(--line) !important; }
-.rec-sep { background: var(--line) !important; }
-.dot-label { color: var(--ink-3) !important; }
-.dot.active .dot-label { color: var(--ink) !important; }
-.dot-pip { background: rgba(255,255,255,0.22) !important; }
+.best-badge { background: var(--accent-soft) !important; border: 1px solid rgba(31,170,79,0.3) !important; }
 .dot.active .dot-pip { background: var(--accent) !important; }
-.chart-bars-wrap::after { background: linear-gradient(to right, transparent, rgba(10,11,13,0.85)) !important; }
-.chart-scroll { scrollbar-color: rgba(255,255,255,0.25) transparent !important; }
-.chart-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25) !important; }
-.hour-label, .hour-time { color: var(--ink-3) !important; }
-.hour-cell.peak { background: rgba(52,199,89,0.10) !important; }
-.sk { background: rgba(255,255,255,0.07) !important; }
-footer { color: var(--ink-3) !important; background: transparent !important; }
+.hour-cell.peak { background: var(--accent-soft) !important; }
+footer { color: var(--ink-3) !important; }
 </style>
 
 </head>
@@ -699,7 +675,7 @@ L.control.attribution({ prefix: false, position: 'bottomright' }).addTo(map);
 // nodes — far smoother, especially while the time-lapse animates them.
 const renderer = L.canvas({ padding: 0.5 });
 
-const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
   maxZoom: 19,
   updateWhenZooming: false,
@@ -709,7 +685,7 @@ const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x
 function buildPopup(s) {
   const avgLine = s.commute_avg != null
     ? `Commute avg: <b>${s.commute_avg.toFixed(1)}</b> e-bikes`
-    : `<span style="color:#8e8e96">Still building history</span>`;
+    : `<span style="color:#aeaeb2">Still building history</span>`;
   const nearLabel = s.is_nearest
     ? `<span style="color:#0071e3;font-weight:600"> — Nearest #${s.rank + 1}</span>` : '';
   const statusLine = s.closed
@@ -721,7 +697,7 @@ function buildPopup(s) {
     <div style="font-family:-apple-system,sans-serif;min-width:180px">
       <div style="font-weight:700;font-size:0.92rem;margin-bottom:4px">${s.name}${nearLabel}</div>
       ${statusLine}
-      <div style="font-size:0.8rem;color:#9aa0a8;margin-bottom:6px">${s.walk_min} min walk &nbsp;·&nbsp; ${s.capacity} docks</div>
+      <div style="font-size:0.8rem;color:#6e6e73;margin-bottom:6px">${s.walk_min} min walk &nbsp;·&nbsp; ${s.capacity} docks</div>
       <div style="font-size:0.85rem">Live now: <b>${s.live ?? '—'}</b> e-bikes</div>
       <div style="font-size:0.85rem">${avgLine}</div>
     </div>`;
@@ -836,7 +812,7 @@ function _srGetInstant(q) {
 function _srRender(instant, api) {
   const all = [...instant, ...api].slice(0, 5);
   if (!all.length) {
-    dropdown.innerHTML = '<div class="sr" style="cursor:default"><div class="sr-name" style="color:#8e8e96">No results in SF</div></div>';
+    dropdown.innerHTML = '<div class="sr" style="cursor:default"><div class="sr-name" style="color:#aeaeb2">No results in SF</div></div>';
     dropdown.style.display = 'block';
     return;
   }
@@ -976,7 +952,7 @@ async function fetchStationsData(ids) {
 }
 
 const hourLabels   = ["12am", "1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", "11pm"];
-const BLUE = '#0071e3', GRAY = 'rgba(255,255,255,0.22)';
+const BLUE = '#0071e3', GRAY = '#d1d1d6';
 const LO = 6, HI = 10;
 
 let currentStationId = null;
@@ -1111,21 +1087,21 @@ function renderChart15m(cid, slots, capacity, sid, dayKey) {
     margin: { t: 24, b: 44, l: 44, r: 0 },
     plot_bgcolor: 'rgba(0,0,0,0)', paper_bgcolor: 'rgba(0,0,0,0)',
     xaxis: { visible: false, fixedrange: true },
-    yaxis: { title: { text: 'e-bikes', font: { size: 10, color: '#9aa0a8' } },
-              tickfont: { size: 10, color: '#9aa0a8' },
+    yaxis: { title: { text: 'e-bikes', font: { size: 10, color: '#6e6e73' } },
+              tickfont: { size: 10, color: '#6e6e73' },
               range: yRange, zeroline: false, fixedrange: true, showgrid: false },
     showlegend: false, dragmode: false,
   }, { responsive: false, displayModeBar: false });
 
   Plotly.newPlot(innerId, [{
     x: xs, y: Array(xs.length).fill(capacity || 0), type: 'bar',
-    marker: { color: 'rgba(255,255,255,0.05)', line: { width: 0 } },
+    marker: { color: 'rgba(0,0,0,0.04)', line: { width: 0 } },
     hoverinfo: 'skip', showlegend: false,
   }, {
     x: xs, y: displayYs, type: 'bar',
     marker: { color: cols, opacity: ops15, line: { width: 0 } },
     text: displayYs.map(v => Math.round(v)),
-    textposition: 'outside', textfont: { size: 11, color: '#f2f2f4' },
+    textposition: 'outside', textfont: { size: 11, color: '#1d1d1f' },
     hoverinfo: 'skip',
     showlegend: false,
   }], {
@@ -1133,10 +1109,10 @@ function renderChart15m(cid, slots, capacity, sid, dayKey) {
     width: chartW, height: H,
     margin: { t: 24, b: 44, l: 28, r: 20 },
     plot_bgcolor: 'rgba(0,0,0,0)', paper_bgcolor: 'rgba(0,0,0,0)',
-    xaxis: { tickangle: -45, tickfont: { size: 11, color: '#9aa0a8' },
-              gridcolor: 'rgba(255,255,255,0.05)', linecolor: 'rgba(255,255,255,0.18)', showline: true, fixedrange: true },
+    xaxis: { tickangle: -45, tickfont: { size: 11, color: '#6e6e73' },
+              gridcolor: 'rgba(20,22,26,0.05)', linecolor: 'rgba(20,22,26,0.14)', showline: true, fixedrange: true },
     yaxis: { range: yRange, zeroline: false, fixedrange: true,
-              showticklabels: false, showgrid: true, gridcolor: 'rgba(255,255,255,0.08)' },
+              showticklabels: false, showgrid: true, gridcolor: 'rgba(20,22,26,0.06)' },
     shapes: (dayKey || selectedDay) === DOW_KEYS[new Date().getDay()] ? [{ type:'line', x0:nowLabel, x1:nowLabel, y0:0, y1:1, yref:'paper',
                 line:{ color:'rgba(10,132,255,0.5)', width:1.5, dash:'dot' } }] : [],
     annotations: (dayKey || selectedDay) === DOW_KEYS[new Date().getDay()] ? [{ x:nowLabel, y:1, yref:'paper', text:'now', showarrow:false,
@@ -1195,19 +1171,19 @@ function renderChart(cid, avgs, capacity, sid, dayKey) {
                        font:{ size:8, color:'white' }, yanchor:'bottom', xanchor:'center', bgcolor:'rgba(10,132,255,0.75)', borderpad:3, borderwidth:0 }] : [];
   const traces = [
     { x: hourLabels, y: Array(24).fill(capacity), type: 'bar',
-       marker: { color: 'rgba(255,255,255,0.05)', line: { width: 0 } }, hoverinfo: 'skip', showlegend: false },
+       marker: { color: 'rgba(0,0,0,0.04)', line: { width: 0 } }, hoverinfo: 'skip', showlegend: false },
     { x: hourLabels, y: displayAvgs, type: 'bar',
        marker: { color: colors, opacity: ops1h, line: { width: 0 } },
        text: displayAvgs.map(v => Math.round(v)),
-       textposition: 'outside', textfont: { size: 10, color: '#f2f2f4' },
+       textposition: 'outside', textfont: { size: 10, color: '#1d1d1f' },
        hoverinfo: 'skip',
        showlegend: false },
   ];
   const layout = {
     barmode: 'overlay', height: 220, margin: { t: 28, b: 44, l: 40, r: 12 },
     plot_bgcolor: 'rgba(0,0,0,0)', paper_bgcolor: 'rgba(0,0,0,0)',
-    yaxis: { title: { text: 'e-bikes', font: { size: 10, color: '#9aa0a8' } },
-              tickfont: { size: 10, color: '#9aa0a8' }, gridcolor: 'rgba(255,255,255,0.08)',
+    yaxis: { title: { text: 'e-bikes', font: { size: 10, color: '#6e6e73' } },
+              tickfont: { size: 10, color: '#6e6e73' }, gridcolor: 'rgba(20,22,26,0.06)',
               range: [0, capacity * 1.35], zeroline: false, fixedrange: true },
     shapes: nowShape, annotations: nowAnnot,
     showlegend: false, bargap: 0.25,
@@ -1246,8 +1222,8 @@ function renderChart(cid, avgs, capacity, sid, dayKey) {
       width: 56, height: 220, margin: { t: 24, b: 44, l: 44, r: 0 },
       plot_bgcolor: 'rgba(0,0,0,0)', paper_bgcolor: 'rgba(0,0,0,0)',
       xaxis: { visible: false, fixedrange: true },
-      yaxis: { title: { text: 'e-bikes', font: { size: 10, color: '#9aa0a8' } },
-               tickfont: { size: 10, color: '#9aa0a8' },
+      yaxis: { title: { text: 'e-bikes', font: { size: 10, color: '#6e6e73' } },
+               tickfont: { size: 10, color: '#6e6e73' },
                range: yRange1h, zeroline: false, fixedrange: true, showgrid: false },
       showlegend: false, dragmode: false,
     }, { responsive: false, displayModeBar: false });
@@ -1255,10 +1231,10 @@ function renderChart(cid, avgs, capacity, sid, dayKey) {
       barmode: 'overlay', width: 24 * barPx1h + 20, height: 220,
       margin: { t: 24, b: 44, l: 28, r: 20 },
       plot_bgcolor: 'rgba(0,0,0,0)', paper_bgcolor: 'rgba(0,0,0,0)',
-      xaxis: { tickangle: -45, tickfont: { size: 10, color: '#9aa0a8' },
-               gridcolor: 'rgba(255,255,255,0.05)', linecolor: 'rgba(255,255,255,0.18)', showline: true, fixedrange: true },
+      xaxis: { tickangle: -45, tickfont: { size: 10, color: '#6e6e73' },
+               gridcolor: 'rgba(20,22,26,0.05)', linecolor: 'rgba(20,22,26,0.14)', showline: true, fixedrange: true },
       yaxis: { range: yRange1h, showticklabels: false, showgrid: true,
-               gridcolor: 'rgba(255,255,255,0.08)', zeroline: false, fixedrange: true },
+               gridcolor: 'rgba(20,22,26,0.06)', zeroline: false, fixedrange: true },
       shapes: nowShape, annotations: nowAnnot,
       showlegend: false, bargap: 0.25, dragmode: false,
     }, { responsive: false, displayModeBar: false });
@@ -1271,8 +1247,8 @@ function renderChart(cid, avgs, capacity, sid, dayKey) {
       }
     });
   } else {
-    layout.xaxis = { tickangle: -45, tickfont: { size: 10, color: '#9aa0a8' },
-                      gridcolor: 'rgba(255,255,255,0.05)', linecolor: 'rgba(255,255,255,0.18)', showline: true, fixedrange: true };
+    layout.xaxis = { tickangle: -45, tickfont: { size: 10, color: '#6e6e73' },
+                      gridcolor: 'rgba(20,22,26,0.05)', linecolor: 'rgba(20,22,26,0.14)', showline: true, fixedrange: true };
     layout.dragmode = false;
     Plotly.newPlot(cid, traces, layout, { responsive: true });
   }
@@ -1387,9 +1363,9 @@ function renderCard(s, idx) {
   container.innerHTML =
     '<span id="dyn-live-count-' + idx + '" style="display:none">' + live + '</span>' +
     '<div class="chart-legend-row">' +
-      '<span style="font-size:0.74rem;color:#9aa0a8;">' + capacity + ' docks</span>' +
+      '<span style="font-size:0.74rem;color:#6e6e73;">' + capacity + ' docks</span>' +
       '<div style="display:flex;align-items:center;gap:6px;">' +
-        '<span style="font-size:0.74rem;color:#9aa0a8;white-space:nowrap">Time interval</span>' +
+        '<span style="font-size:0.74rem;color:#6e6e73;white-space:nowrap">Time interval</span>' +
         '<div class="res-wrap" id="res-wrap-' + idx + '">' +
           '<button class="res-btn' + (chartResolution === '15m' ? '' : ' active') + '" data-res="1h" data-idx="' + idx + '">1h</button>' +
           '<button class="res-btn' + (chartResolution === '15m' ? ' active' : '') + '" data-res="15m" data-idx="' + idx + '">15m</button>' +
@@ -1575,10 +1551,10 @@ function updateDay(day) {
     const reactLayout = {
       barmode: 'overlay', height: 220, margin: { t: 28, b: 44, l: 40, r: 12 },
       plot_bgcolor: 'rgba(0,0,0,0)', paper_bgcolor: 'rgba(0,0,0,0)',
-      xaxis: { tickangle: -45, tickfont: { size: 10, color: '#9aa0a8' },
-                gridcolor: 'rgba(255,255,255,0.05)', linecolor: 'rgba(255,255,255,0.18)', showline: true, fixedrange: true },
-      yaxis: { title: { text: 'e-bikes', font: { size: 10, color: '#9aa0a8' } },
-                tickfont: { size: 10, color: '#9aa0a8' }, gridcolor: 'rgba(255,255,255,0.08)',
+      xaxis: { tickangle: -45, tickfont: { size: 10, color: '#6e6e73' },
+                gridcolor: 'rgba(20,22,26,0.05)', linecolor: 'rgba(20,22,26,0.14)', showline: true, fixedrange: true },
+      yaxis: { title: { text: 'e-bikes', font: { size: 10, color: '#6e6e73' } },
+                tickfont: { size: 10, color: '#6e6e73' }, gridcolor: 'rgba(20,22,26,0.06)',
                 range: [0, capacity * 1.35], zeroline: false, fixedrange: true },
       shapes: effDay === DOW_KEYS[new Date().getDay()] ? [{ type:'line', x0:hourLabels[nowH2], x1:hourLabels[nowH2], y0:0, y1:1, yref:'paper',
                   line:{ color:'rgba(10,132,255,0.5)', width:1.5, dash:'dot' } }] : [],
@@ -1593,11 +1569,11 @@ function updateDay(day) {
 
     Plotly.react(plotCid, [
       { x: hourLabels, y: Array(24).fill(capacity), type: 'bar',
-         marker: { color: 'rgba(255,255,255,0.05)', line: { width: 0 } }, hoverinfo: 'skip', showlegend: false },
+         marker: { color: 'rgba(0,0,0,0.04)', line: { width: 0 } }, hoverinfo: 'skip', showlegend: false },
       { x: hourLabels, y: displayAvgs, type: 'bar',
          marker: { color: colors, opacity: opsReact, line: { width: 0 } },
          text: displayAvgs.map(v => Math.round(v)),
-         textposition: 'outside', textfont: { size: 10, color: '#f2f2f4' },
+         textposition: 'outside', textfont: { size: 10, color: '#1d1d1f' },
          hoverinfo: 'skip',
          showlegend: false },
     ], reactLayout);
@@ -1642,7 +1618,7 @@ const LOCATE_ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
 function locateUser(doFly) {
   if (!navigator.geolocation) return;
   const btn = document.getElementById('locate-btn');
-  if (btn) btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="#8e8e96" d="M12 2 L20 22 L12 17 L4 22 Z"/></svg>';
+  if (btn) btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="#aeaeb2" d="M12 2 L20 22 L12 17 L4 22 Z"/></svg>';
   if (!document.getElementById('nearest-cards-scroll')) renderSkeletonCards();
   navigator.geolocation.getCurrentPosition(
     pos => {
@@ -1664,7 +1640,7 @@ document.getElementById('locate-btn').addEventListener('click', () => locateUser
 let tlActive = false;  // true while the time-lapse owns marker styling
 const CLOSED_GRAY = '#c7c7cc';   // stations with is_renting=0 / is_installed=0
 function availColor(n) {
-  if (n == null) return '#8e8e96';
+  if (n == null) return '#aeaeb2';
   if (n >= 6)    return '#34c759';
   if (n >= 1)    return '#ff9500';
   return '#ff3b30';
@@ -1715,7 +1691,7 @@ async function fetchLive() {
     document.getElementById('live-ts').style.color = '#34c759';
   } catch(e) {
     document.getElementById('live-ts').textContent = 'Live data unavailable';
-    document.getElementById('live-ts').style.color = '#8e8e96';
+    document.getElementById('live-ts').style.color = '#aeaeb2';
   }
 }
 fetchLive();
@@ -1776,7 +1752,7 @@ function tlPaint(frac) {
     if (marker === selectedMarker) return;
     const arr = cityHourly[s.id];
     let tr, tc, op;
-    if (!arr) { tr = 3 * zs; tc = 'rgba(255,255,255,0.22)'; op = 0.5; }
+    if (!arr) { tr = 3 * zs; tc = '#d1d1d6'; op = 0.5; }
     else { const v = tlValueAt(arr, frac); tr = radiusFor(v) * zs; tc = availColor(Math.round(v)); op = 0.9; }
     if (introE >= 1) {
       marker.setStyle({ radius: tr, fillColor: tc, fillOpacity: op });

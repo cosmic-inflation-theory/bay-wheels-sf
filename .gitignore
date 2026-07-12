@@ -1,5 +1,6 @@
 *.html
 !report.html
 !preview.html
+!preview-light.html
 !20[0-9][0-9]-[0-9][0-9]-bay-wheels-report.html
 !index.html
