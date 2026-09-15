@@ -11,7 +11,7 @@ self.addEventListener('push', (event) => {
   const title = d.title || 'BayGlide';
   const options = {
     body: d.body || '',
-    tag: d.station_id || 'bayglide-alert',   // collapse repeats for the same station
+    tag: d.tag || d.station_id || 'bayglide-alert',   // trip pushes pass "trip-<id>"; alerts collapse per station
     renotify: true,
     data: { lyftUrl: d.lyftUrl, mapUrl: d.mapUrl },
     actions: [

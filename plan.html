@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BayGlide · Book a ride ahead</title>
+<meta name="theme-color" content="#f6f7f9">
+<style>
+  :root { --blue:#0071e3; --ink:#1d1d1f; --sub:#6e6e73; --bg:#f6f7f9;
+          --card:#fff; --line:#e5e5ea; --green:#34c759; --amber:#ff9500;
+          --red:#ff3b30; --tint:#e8f1fd; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+         font-size:16px; line-height:1.45; }
+  main { max-width:680px; margin:0 auto; padding:20px 16px 60px; }
+  header { padding:26px 16px 6px; max-width:680px; margin:0 auto; }
+  h1 { font-size:26px; font-weight:700; margin:0 0 4px; letter-spacing:-.02em; }
+  .tagline { color:var(--sub); margin:0; font-size:15px; }
+  .toplink { float:right; color:var(--blue); text-decoration:none; font-size:14px; padding-top:6px; }
+  .toplink:visited { color:var(--blue); }
+  .card { background:var(--card); border-radius:14px; padding:18px 18px 16px;
+          box-shadow:0 1px 3px rgba(0,0,0,.06); margin:16px 0; }
+  .card h2 { font-size:18px; margin:0 0 12px; letter-spacing:-.01em; }
+  label.field { display:block; font-size:13px; color:var(--sub);
+                text-transform:uppercase; letter-spacing:.04em; margin:12px 0 5px; }
+  input[type=text], input[type=datetime-local] {
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:9px;
+    font-size:16px; background:#fff; color:var(--ink); }
+  input:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,113,227,.15); }
+  .row { display:flex; gap:10px; flex-wrap:wrap; }
+  .row > div { flex:1 1 150px; }
+  .btn { display:inline-block; border:none; border-radius:980px; padding:10px 18px;
+         font-size:15px; font-weight:600; cursor:pointer; text-decoration:none; }
+  .btn.primary { background:var(--blue); color:#fff; }
+  .btn.primary:disabled { background:#b0d7ff; cursor:default; }
+  .btn.subtle { background:var(--tint); color:var(--blue); }
+  .btn.ghost { background:transparent; color:var(--sub); }
+  .btn.mini { padding:6px 12px; font-size:13px; }
+  #find-btn { margin-top:16px; }
+  .hint { font-size:13px; color:var(--sub); margin-top:6px; }
+  .banner { border-radius:12px; padding:12px 14px; margin:14px 0; font-size:14px; }
+  .banner.warn { background:#fff4e5; color:#8a5300; }
+  .banner.info { background:var(--tint); color:#0040dd; }
+  .banner.err { background:#ffe9e7; color:#c4231b; }
+  .banner.success { background:#e9f9ee; color:#1d7a35; }
+  /* origin autocomplete */
+  .origin-wrap { position:relative; }
+  .dropdown { position:absolute; z-index:30; left:0; right:0; top:100%; background:#fff;
+              border:1px solid var(--line); border-radius:10px; margin-top:4px;
+              box-shadow:0 8px 24px rgba(0,0,0,.12); overflow:hidden; display:none; }
+  .dropdown .opt { padding:10px 12px; cursor:pointer; }
+  .dropdown .opt:hover, .dropdown .opt.active { background:var(--tint); }
+  .dropdown .opt .nm { font-weight:600; font-size:14px; }
+  .dropdown .opt .dt { color:var(--sub); font-size:12px; white-space:nowrap;
+                        overflow:hidden; text-overflow:ellipsis; }
+  /* candidate rows */
+  .cand { display:flex; align-items:center; gap:10px; padding:11px 6px;
+          border-bottom:1px solid var(--line); }
+  .cand:last-child { border-bottom:none; }
+  .cand input { width:18px; height:18px; flex:none; accent-color:var(--blue); }
+  .cand .info { flex:1; min-width:0; }
+  .cand .nm { font-weight:600; font-size:15px; display:flex; align-items:center; gap:7px; }
+  .cand .nm .badge { font-size:11px; font-weight:600; border-radius:6px; padding:1px 7px; }
+  .badge.zero { background:#ffe9e7; color:#c4231b; }
+  .badge.nohist { background:#f1f1f4; color:#6e6e73; }
+  .badge.closed { background:#3a3a3c; color:#fff; }
+  .cand .meta { color:var(--sub); font-size:13px; margin-top:2px; }
+  .cand .num { text-align:right; flex:none; width:88px; }
+  .cand .num b { font-size:16px; }
+  .cand .num small { display:block; color:var(--sub); font-size:11px; }
+  .dot { width:10px; height:10px; border-radius:50%; flex:none; }
+  .roles { color:var(--sub); font-size:12px; margin-top:4px; }
+  /* bookings */
+  .trip { border:1px solid var(--line); border-radius:12px; padding:14px; margin:12px 0; }
+  .trip .head { display:flex; justify-content:space-between; gap:8px; align-items:baseline; }
+  .trip .head b { font-size:16px; }
+  .status { font-size:12px; font-weight:600; border-radius:6px; padding:2px 8px; flex:none; }
+  .status.upcoming { background:var(--tint); color:var(--blue); }
+  .status.sent { background:#e9f9ee; color:#1d7a35; }
+  .status.expired { background:#f1f1f4; color:var(--sub); }
+  .trip .detail { color:var(--sub); font-size:14px; margin-top:4px; }
+  .trip .live { font-size:14px; margin-top:8px; }
+  .trip .actions { display:flex; gap:8px; margin-top:10px; }
+  .spin { display:inline-block; width:15px; height:15px; border:2px solid #c7dcf7;
+          border-top-color:var(--blue); border-radius:50%; animation:spin .7s linear infinite;
+          vertical-align:-2px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .empty { color:var(--sub); font-size:14px; text-align:center; padding:18px 0; }
+  footer { text-align:center; color:var(--sub); font-size:12.5px; padding:8px 16px 30px;
+           max-width:680px; margin:0 auto; }
+  footer a { color:var(--blue); }
+</style>
+</head>
+<body>
+<header>
+  <a class="toplink" href="report.html">Live map ↗</a>
+  <h1>Book a ride ahead 🚲</h1>
+  <p class="tagline">Plan tomorrow's trip tonight. We verify live conditions 30&nbsp;min
+  before you leave and push you the best station.</p>
+</header>
+<main>
+  <div id="banner-slot"></div>
+
+  <section class="card" id="planner">
+    <h2>Plan the trip</h2>
+    <label class="field" for="origin-input">Where you'll start</label>
+    <div class="origin-wrap">
+      <input type="text" id="origin-input" placeholder="Search a place, or paste “37.79, -122.40”"
+             autocomplete="off" autocorrect="off">
+      <div class="dropdown" id="origin-dd"></div>
+    </div>
+    <div style="margin-top:8px">
+      <button class="btn subtle mini" id="geo-btn">📍 Use my location</button>
+    </div>
+
+    <div class="row" style="margin-top:4px">
+      <div>
+        <label class="field" for="when-input">Departure</label>
+        <input type="datetime-local" id="when-input">
+      </div>
+    </div>
+
+    <button class="btn primary" id="find-btn">Find pickup stations</button>
+    <div id="candidates"></div>
+    <div id="pick-roles" class="roles" hidden></div>
+    <button class="btn primary" id="book-btn" hidden>Book it</button>
+    <div class="hint" id="plan-hint">Pick one primary station and up to two backups.
+      We check them live before your ride.</div>
+  </section>
+
+  <section class="card" id="bookings-card" hidden>
+    <h2>My bookings</h2>
+    <div id="bookings"></div>
+  </section>
+</main>
+<footer>
+  Bay Wheels can't hold a bike — no app can. This is the closest thing: your plan,
+  your stations, verified live 30&nbsp;min before departure, then a push with the verdict.
+  · <a href="report.html">Open the live map</a>
+</footer>
+
+<script>
+/* ── constants ────────────────────────────────────────────────────────────── */
+const API_BASE = 'https://bayglide-api.onrender.com';
+const GBFS = 'https://gbfs.lyft.com/gbfs/2.3/bay/en';
+// Same bounding box the poller uses (src/config of the project).
+const SF = { latMin: 37.70, latMax: 37.83, lonMin: -122.52, lonMax: -122.35 };
+
+/* ── tiny DOM + fmt helpers ───────────────────────────────────────────────── */
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g,
+  c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtTime = (d) => d.toLocaleTimeString('en-US',
+  { timeZone:'America/Los_Angeles', hour:'numeric', minute:'2-digit' });
+const fmtDate = (d) => d.toLocaleDateString('en-US',
+  { timeZone:'America/Los_Angeles', weekday:'short', month:'short', day:'numeric' });
+function banner(kind, html, replace=true) {
+  const slot = $('banner-slot');
+  const div = document.createElement('div');
+  div.className = 'banner ' + kind;
+  div.innerHTML = html;
+  if (replace) slot.innerHTML = '';
+  slot.appendChild(div);
+  return div;
+}
+function haversineM(lat1, lon1, lat2, lon2) {
+  const r = 6371000, p1 = lat1*Math.PI/180, p2 = lat2*Math.PI/180;
+  const dp = (lat2-lat1)*Math.PI/180, dl = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dp/2)**2 + Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
+  return 2*r*Math.asin(Math.sqrt(a));
+}
+const estWalkSecs = (a, b) => haversineM(a.lat, a.lon, b.lat, b.lon) * 1.3 / (80/60);
+const fmtMin = (s) => Math.max(1, Math.round(s/60)) + ' min';
+const availColor = (v) => v == null ? '#aeaeb2' : v >= 6 ? '#34c759' : v >= 1 ? '#ff9500' : '#ff3b30';
+
+/* ── state ────────────────────────────────────────────────────────────────── */
+let origin = null;        // {lat, lon, label}
+let stationInfo = null;   // {station_id: {name, lat, lon, capacity}}
+let forecastData = {};    // station_id -> {all:[96], mon:[96], ..., cap}  (cached)
+let cands = [];           // ranked candidate rows
+let sub = null;           // PushSubscription
+
+/* ── origin: search / geolocation / coordinates ───────────────────────────── */
+let ddTimer = null, ddItems = [], ddActive = -1;
+const originInput = $('origin-input');
+
+function setOrigin(pt, label) {
+  origin = { lat: pt.lat, lon: pt.lon, label: label };
+  originInput.value = label;
+  $('origin-dd').style.display = 'none';
+}
+
+originInput.addEventListener('input', () => {
+  const q = originInput.value.trim();
+  // Pasted coordinates (“37.79, -122.40”) accept immediately.
+  // NOTE: JS has no chained comparisons — `a <= x <= b` means `(a <= x) <= b`.
+  const m = q.match(/^\s*(-?\d{1,3}\.\d+)[,\s]+(-?\d{1,3}\.\d+)\s*$/);
+  if (m) {
+    const lat = +m[1], lon = +m[2];
+    if (lat >= SF.latMin && lat <= SF.latMax && lon >= SF.lonMin && lon <= SF.lonMax)
+      setOrigin({lat, lon}, q);
+    return;
+  }
+  origin = null;
+  clearTimeout(ddTimer);
+  if (q.length < 3) { $('origin-dd').style.display = 'none'; return; }
+  ddTimer = setTimeout(() => searchOrigin(q), 300);
+});
+
+async function searchOrigin(q) {
+  try {
+    const r = await fetch(API_BASE + '/api/place-suggest?q=' + encodeURIComponent(q) +
+                         '&lat=37.7793&lon=-122.4193');
+    if (!r.ok) return;
+    const d = await r.json();
+    ddItems = (d.results || []).slice(0, 5);
+    const dd = $('origin-dd');
+    if (!ddItems.length) { dd.style.display = 'none'; return; }
+    dd.innerHTML = ddItems.map((p, i) =>
+      `<div class="opt" data-i="${i}"><div class="nm">${esc(p.name)}</div>` +
+      `<div class="dt">${esc(p.detail || '')}</div></div>`).join('');
+    ddActive = -1;
+    dd.style.display = 'block';
+    dd.querySelectorAll('.opt').forEach(el =>
+      el.addEventListener('click', () => chooseOrigin(+el.dataset.i)));
+  } catch (e) { /* API asleep — geolocation/coords still work */ }
+}
+function chooseOrigin(i) {
+  const p = ddItems[i];
+  if (p) setOrigin(p, p.name);
+}
+originInput.addEventListener('keydown', (e) => {
+  const dd = $('origin-dd');
+  if (dd.style.display !== 'block') return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    ddActive = (ddActive + (e.key === 'ArrowDown' ? 1 : -1) + ddItems.length) % ddItems.length;
+    dd.querySelectorAll('.opt').forEach((el, j) => el.classList.toggle('active', j === ddActive));
+  } else if (e.key === 'Enter' && ddActive >= 0) {
+    e.preventDefault(); chooseOrigin(ddActive);
+  }
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.origin-wrap')) $('origin-dd').style.display = 'none';
+});
+
+$('geo-btn').addEventListener('click', () => {
+  if (!navigator.geolocation) { banner('warn', 'This browser has no geolocation.'); return; }
+  $('geo-btn').textContent = 'Locating…';
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      $('geo-btn').textContent = '📍 Use my location';
+      setOrigin({ lat: pos.coords.latitude, lon: pos.coords.longitude },
+                `My location (${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)})`);
+    },
+    () => { $('geo-btn').textContent = '📍 Use my location';
+            banner('warn', 'Location unavailable — search or paste coordinates instead.'); });
+});
+
+/* ── departure default: tomorrow 8:45 AM, within the API's 7-day limit ───── */
+(function initWhen() {
+  const pad = (n) => String(n).padStart(2, '0');
+  const toVal = (d) => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T` +
+                       `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1); tomorrow.setHours(8, 45, 0, 0);
+  const el = $('when-input');
+  el.value = toVal(tomorrow);
+  el.min = toVal(new Date());
+  const max = new Date(); max.setDate(max.getDate() + 7);
+  el.max = toVal(max);
+})();
+
+/* ── station data (Lyft GBFS is public + CORS-enabled, like the report map) ── */
+async function loadStationInfo() {
+  if (stationInfo) return stationInfo;
+  const r = await fetch(GBFS + '/station_information.json');
+  const d = await r.json();
+  stationInfo = {};
+  for (const s of d.data.stations)
+    stationInfo[s.station_id] = { name: s.name, lat: s.lat, lon: s.lon, capacity: s.capacity };
+  return stationInfo;
+}
+async function loadLive() {
+  const r = await fetch(GBFS + '/station_status.json');
+  const d = await r.json();
+  const out = {};
+  for (const s of d.data.stations)
+    out[s.station_id] = { ebikes: s.num_ebikes_available || 0,
+                          bikes: s.num_bikes_available || 0,
+                          docks: s.num_docks_available || 0,
+                          renting: s.is_renting !== 0 && s.is_installed !== 0 };
+  return out;
+}
+async function loadForecast(ids) {
+  const missing = ids.filter(id => forecastData[id] === undefined);
+  if (!missing.length) return;
+  try {
+    const r = await fetch(API_BASE + '/api/stations?ids=' +
+                         encodeURIComponent(missing.slice(0, 10).join(',')));
+    if (r.ok) {
+      const d = await r.json();
+      for (const id of missing) forecastData[id] = d.forecastData[id] || null;
+    } else { missing.forEach(id => forecastData[id] = null); }
+  } catch (e) { missing.forEach(id => forecastData[id] = null); }
+}
+
+/* Predicted e-bikes for a departure Date, from the 15-min slot baselines.
+   Baselines are keyed in SF local time (America/Los_Angeles) — this app is
+   SF-only, so browser-local == SF-local for anyone actually riding. */
+function predictedAt(stationId, when) {
+  const entry = forecastData[stationId];
+  if (!entry) return null;
+  const dowKey = ['sun','mon','tue','wed','thu','fri','sat'][when.getDay()];
+  const slots = entry[dowKey] || entry.all;
+  if (!slots) return null;
+  const slot = when.getHours() * 4 + Math.floor(when.getMinutes() / 15);
+  return Math.min(slots[slot] || 0, entry.cap || slots[slot] || 0);
+}
+
+/* ── candidate ranking ────────────────────────────────────────────────────── */
+$('find-btn').addEventListener('click', findStations);
+
+async function findStations() {
+  if (!origin) { banner('warn', 'Pick a starting point first — search a place, use your location, or paste coordinates.'); return; }
+  const when = new Date($('when-input').value);
+  if (isNaN(when) || when <= new Date()) { banner('warn', 'Pick a departure time in the future.'); return; }
+  const btn = $('find-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Checking stations…';
+  $('candidates').innerHTML = '<div class="empty"><span class="spin"></span> Ranking nearby stations by your own historical data…</div>';
+  $('banner-slot').innerHTML = '';
+  try {
+    const [info, live] = await Promise.all([loadStationInfo(), loadLive()]);
+
+    // 1) nearest stations to the origin
+    const near = Object.entries(info)
+      .map(([id, s]) => ({ id, ...s, dist: haversineM(origin.lat, origin.lon, s.lat, s.lon) }))
+      .filter(s => s.dist <= 800)
+      .sort((a, b) => a.dist - b.dist)
+      .slice(0, 8);
+    if (!near.length) throw new Error('no-stations');
+
+    // 2) real walking times via the API's Google Maps proxy (estimate fallback)
+    let walk = near.map(s => estWalkSecs(origin, s));
+    try {
+      const r = await fetch(API_BASE + '/api/route-plan', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ origin: [origin.lat, origin.lon],
+                               dest: [origin.lat, origin.lon],
+                               pickups: near.map(s => [s.lat, s.lon]),
+                               dropoffs: [[origin.lat, origin.lon]] }),
+      });
+      if (r.ok) { const d = await r.json(); walk = d.pickupSecs.map(s => s); }
+    } catch (e) { /* keep estimates */ }
+
+    // 3) forecast baselines for those ids
+    await loadForecast(near.map(s => s.id));
+
+    // 4) assemble + rank: predicted e-bikes at the departure slot first,
+    //    walking time breaks ties. Closed stations sink to the bottom.
+    cands = near.map((s, i) => ({
+      id: s.id, name: s.name, capacity: s.capacity || '—',
+      walkSecs: walk[i], live: live[s.id] || { ebikes: 0, renting: true },
+      pred: predictedAt(s.id, when),
+    })).sort((a, b) => {
+      const pa = (a.live.renting ? (a.pred ?? -1) : -2);
+      const pb = (b.live.renting ? (b.pred ?? -1) : -2);
+      return (pb - pa) || (a.walkSecs - b.walkSecs);
+    });
+
+    renderCandidates(when);
+  } catch (e) {
+    $('candidates').innerHTML = '';
+    if (e.message === 'no-stations')
+      banner('warn', 'No Bay Wheels stations within 800 m of that point — try somewhere more central.');
+    else banner('err', 'Could not load station data — check your connection and try again.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Find pickup stations';
+  }
+}
+
+function renderCandidates(when) {
+  const box = $('candidates');
+  box.innerHTML = '';
+  cands.forEach((c, i) => {
+    const row = document.createElement('div');
+    row.className = 'cand';
+    const predTxt = c.pred == null ? '—' : c.pred.toFixed(1);
+    const badge = !c.live.renting ? '<span class="badge closed">Temporarily closed</span>'
+      : c.pred != null && c.pred < 0.05 ? '<span class="badge zero">Usually empty</span>'
+      : c.pred == null ? '<span class="badge nohist">No history yet</span>' : '';
+    row.innerHTML =
+      `<input type="radio" name="primary" id="p${i}" value="${i}" ${i===0?'checked':''} ${!c.live.renting?'disabled':''}>` +
+      `<div class="info"><div class="nm"><span class="dot" style="background:${availColor(c.pred)}"></span>${esc(c.name)} ${badge}</div>` +
+      `<div class="meta">${fmtMin(c.walkSecs)} walk · ${c.capacity} docks · ${c.live.ebikes} e-bikes live now</div></div>` +
+      `<div class="num"><b>${predTxt}</b><small>expected at ${fmtTime(when)}</small></div>`;
+    box.appendChild(row);
+  });
+  // Auto-pick: primary = first open station; backups = next two open ones.
+  const open = cands.map((c, i) => ({ c, i })).filter(x => x.c.live.renting);
+  if (open.length) {
+    $('p' + open[0].i).checked = true;
+    open.slice(1, 3).forEach((x) => {
+      const cb = document.createElement('input');
+      cb.type = 'checkbox'; cb.className = 'backup'; cb.dataset.idx = x.i; cb.checked = true;
+      cb.id = 'b' + x.i;
+      const lbl = document.createElement('label');
+      lbl.style.display = 'flex'; lbl.style.alignItems = 'center'; lbl.style.gap = '4px';
+      lbl.title = 'Backup station';
+      lbl.htmlFor = 'b' + x.i;
+      lbl.appendChild(cb);
+      const radio = box.children[x.i].querySelector('input[type=radio]');
+      radio.insertAdjacentElement('beforebegin', lbl);
+    });
+  }
+  $('pick-roles').hidden = false;
+  $('pick-roles').textContent = '● radio = your pickup station · ☑ checkbox = backups (checked live if the pickup is empty)';
+  $('book-btn').hidden = false;
+}
+
+/* ── push plumbing (same VAPID identity + sw.js as the alert feature) ─────── */
+function urlB64ToUint8Array(b64) {
+  const pad = '='.repeat((4 - b64.length % 4) % 4);
+  const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+}
+async function ensurePush() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window))
+    throw new Error('unsupported');
+  const reg = await navigator.serviceWorker.register('./sw.js');
+  await navigator.serviceWorker.ready;
+  let s = await reg.pushManager.getSubscription();
+  if (s) return s;
+  const r = await fetch(API_BASE + '/api/vapidPublicKey');
+  const d = await r.json();
+  if (!d.key) throw new Error('not-configured');
+  if (Notification.permission === 'default') await Notification.requestPermission();
+  if (Notification.permission !== 'granted') throw new Error('denied');
+  s = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlB64ToUint8Array(d.key),
+  });
+  return s;
+}
+function subPayload(s) {
+  const j = s.toJSON ? s.toJSON() : s;
+  return { endpoint: j.endpoint, keys: j.keys };
+}
+
+/* ── booking ───────────────────────────────────────────────────────────────── */
+$('book-btn').addEventListener('click', bookRide);
+
+async function bookRide() {
+  const when = new Date($('when-input').value);
+  if (!(when > new Date())) { banner('warn', 'Pick a departure time in the future.'); return; }
+  const primary = document.querySelector('input[name="primary"]:checked');
+  if (!primary) { banner('warn', 'Pick a pickup station.'); return; }
+  const pick = cands[+primary.value];
+  const backups = [...document.querySelectorAll('input.backup:checked')]
+      .map(cb => cands[+cb.dataset.idx].id).slice(0, 2);
+  const btn = $('book-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Booking…';
+  try {
+    sub = await ensurePush();
+    const r = await fetch(API_BASE + '/api/trips', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        subscription: subPayload(sub),
+        origin: { lat: origin.lat, lon: origin.lon, label: origin.label },
+        station_id: pick.id, backup_ids: backups,
+        depart_at: when.toISOString(),
+      }),
+    });
+    const body = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(body.description || ('HTTP ' + r.status));
+    banner('success',
+      `Booked for ${esc(fmtDate(when))} at ${esc(fmtTime(when))} — we'll push you ` +
+      `the verdict ~30 min before from <b>${esc(pick.name)}</b>.`);
+    await refreshBookings();
+  } catch (e) {
+    if (e.message === 'not-configured')
+      banner('err', 'The API has no push keys yet (VAPID). Reminders can\u2019t be delivered until that\u2019s configured — see ALERTS_SETUP.md.');
+    else if (e.message === 'denied')
+      banner('warn', 'Notifications are blocked for this site — allow them in your browser settings, then book again.');
+    else if (e.message === 'unsupported')
+      banner('warn', 'This browser can\u2019t receive web push. On iOS: open in Safari and use “Add to Home Screen”.');
+    else banner('err', 'Booking failed: ' + esc(e.message));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Book it';
+  }
+}
+
+/* ── bookings list ─────────────────────────────────────────────────────────── */
+async function getSubscription() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return null;
+  try {
+    const reg = await navigator.serviceWorker.register('./sw.js');
+    await navigator.serviceWorker.ready;
+    return await reg.pushManager.getSubscription();
+  } catch (e) { return null; }
+}
+
+async function refreshBookings() {
+  const s = sub || await getSubscription();
+  if (!s) return;
+  sub = s;
+  const r = await fetch(API_BASE + '/api/trips?endpoint=' + encodeURIComponent(s.endpoint));
+  if (!r.ok) return;
+  const trips = (await r.json()).trips || [];
+  const info = await loadStationInfo().catch(() => ({}));
+  $('bookings-card').hidden = false;
+  const box = $('bookings');
+  if (!trips.length) { box.innerHTML = '<div class="empty">No bookings yet — plan one above.</div>'; return; }
+  box.innerHTML = '';
+  for (const t of trips) {
+    // Flask serializes datetimes as RFC-1123 ("Wed, 16 Sep 2026 15:00:00 GMT");
+    // Date() parses that natively, same as ISO strings.
+    const when = new Date(t.depart_at);
+    const div = document.createElement('div');
+    div.className = 'trip';
+    const status = t.status === 'notified' ? ['sent', 'Reminder sent']
+                 : t.status === 'expired' ? ['expired', 'Missed — window passed']
+                 : ['upcoming', 'Verified ' + fmtTime(new Date(when - 30*60000)) + ' →'];
+    const stName = (info[t.station_id] || {}).name || t.station_id;
+    const bNames = (t.backup_ids || []).map(id => (info[id] || {}).name || id).join(', ');
+    div.innerHTML =
+      `<div class="head"><b>${esc(fmtDate(when))} · ${esc(fmtTime(when))}</b>` +
+      `<span class="status ${status[0]}">${esc(status[1])}</span></div>` +
+      `<div class="detail">From ${esc(t.origin_label || (t.origin_lat.toFixed(4) + ', ' + t.origin_lon.toFixed(4)))} → ` +
+      `<b>${esc(stName)}</b>${bNames ? ' (backups: ' + esc(bNames) + ')' : ''}</div>` +
+      `<div class="live" id="live-${t.id}"></div>` +
+      `<div class="actions">` +
+      `<button class="btn subtle mini" data-check="${t.id}" data-st="${esc(t.station_id)}" ` +
+        `data-backups="${esc((t.backup_ids||[]).join('|'))}">Check now</button>` +
+      `<button class="btn ghost mini" data-cancel="${t.id}">Cancel</button></div>`;
+    div.querySelector('[data-check]').addEventListener('click', checkTrip);
+    div.querySelector('[data-cancel]').addEventListener('click', cancelTrip);
+    box.appendChild(div);
+  }
+}
+
+async function checkTrip(e) {
+  const btn = e.target;
+  const liveEl = $('live-' + btn.dataset.check);
+  liveEl.innerHTML = '<span class="spin"></span>';
+  try {
+    const [live, info] = await Promise.all([loadLive(), loadStationInfo()]);
+    const ids = [btn.dataset.st, ...btn.dataset.backups.split('|').filter(Boolean)];
+    liveEl.innerHTML = ids.map(id => {
+      const s = live[id] || { ebikes: 0, renting: true };
+      const nm = (info[id] || {}).name || id;
+      return `<span class="dot" style="background:${availColor(s.ebikes)}"></span>` +
+             ` <b>${esc(nm)}</b>: ${s.ebikes} e-bikes live`;
+    }).join(' &nbsp;·&nbsp; ');
+  } catch (err) { liveEl.textContent = 'Live check failed — try again.'; }
+}
+
+async function cancelTrip(e) {
+  const id = e.target.dataset.cancel;
+  const s = sub || await getSubscription();
+  if (!s) return;
+  try {
+    const r = await fetch(API_BASE + '/api/trips/' + id + '?endpoint=' +
+                          encodeURIComponent(s.endpoint), { method: 'DELETE' });
+    if (r.ok) refreshBookings();
+  } catch (err) { /* offline */ }
+}
+
+/* ── boot: push readiness + existing bookings ──────────────────────────────── */
+(async function init() {
+  try {
+    const r = await fetch(API_BASE + '/api/vapidPublicKey');
+    const d = await r.json();
+    if (!d.key) {
+      banner('warn', 'Heads-up: the API has no push keys yet, so reminders can\u2019t be delivered. ' +
+        'Everything else works — complete step 2 in <b>ALERTS_SETUP.md</b> (VAPID keys on Render) to turn on delivery.');
+    }
+  } catch (e) { /* API asleep; banner on use */ }
+  sub = await getSubscription();
+  if (sub) { refreshBookings(); return; }
+  $('bookings-card').hidden = false;
+  $('bookings').innerHTML = '<div class="empty">Your bookings appear here once you enable notifications (the Book button will ask).</div>';
+})();
+</script>
+</body>
+</html>
