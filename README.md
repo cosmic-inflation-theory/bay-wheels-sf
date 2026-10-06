@@ -1,5 +1,5 @@
 
-🚲 BayGlide: Bay Wheels e-bike availability
+🚲 BayGlide:
 Will there be an e-bike at my station when I get there?
 
 BayGlide is my personal project that answers that question for SF's Bay Wheels. It watches bike counts all day, learns the daily patterns, and shows you live numbers, forecasts, and a map.
