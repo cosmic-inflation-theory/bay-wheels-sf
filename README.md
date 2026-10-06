@@ -38,18 +38,13 @@ prediction = typical value for that hour
            + (how far we are from typical right now) × 0.5^(distance / 6)
 So if a station is unusually empty right now, the forecast expects it to drift back toward normal over the next several hours.
 
-Why not machine learning? A machine-learning model was tried and compared. It only improved accuracy by about 5.6%, well short of the 15% needed to justify using it, and it made the charts less believable. The simple method won.
-
 A few other choices:
 
 Stations are tracked by station ID, not name, because the bike data contains duplicate station names.
 If a station has no history for a time slot, the forecast falls back to the all-days average, not zero. Otherwise empty slots would show up as a false "0 bikes."
 ⚠️ Good to know
 Forecasts are estimates. They show what usually happens, not a guarantee.
-Data is about 5 minutes old at best. For the freshest count, check the Lyft app.
-You can't reserve a bike from this site. Bay Wheels' public data is read-only. It shows what's available but offers no way to hold a bike.
-No push notifications. Phone alerts and saved trip reminders are currently switched off, so the trip planner is for ranking stations only.
-Gaps can happen. The data is collected from a personal computer, so a sleep or an outage can leave short gaps.
+
 📄 Data source
 Bike and station data comes from Bay Wheels' public GBFS feed, the open standard that bike-share systems use to publish live availability.
 
